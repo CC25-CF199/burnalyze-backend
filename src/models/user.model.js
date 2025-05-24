@@ -1,6 +1,4 @@
 const { v4: uuidv4 } = require('uuid');
-
-const { hashPassword } = require('../utils/userPassword');
 const supabase = require('../config/supabase');
 
 class UserModel {
@@ -35,9 +33,14 @@ class UserModel {
   }
 
   static async createUser(body) {
-    const { username, firstname, lastname, email, password } = body;
-
-    const { hash, salt } = hashPassword(password);
+    const {
+      username,
+      firstname,
+      lastname,
+      email,
+      password_hash,
+      password_salt,
+    } = body;
 
     const response = await supabase
       .from('users')
@@ -48,8 +51,8 @@ class UserModel {
           firstname: firstname,
           lastname: lastname,
           email: email,
-          password_hash: hash,
-          password_salt: salt,
+          password_hash: password_hash,
+          password_salt: password_salt,
         },
       ])
       .select();

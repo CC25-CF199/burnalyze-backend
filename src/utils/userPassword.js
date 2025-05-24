@@ -15,7 +15,8 @@ const verifyPassword = async (userInputPassword, passwordHash) => {
     const isMatch = await bcrypt.compare(userInputPassword, passwordHash);
     return isMatch;
   } catch (error) {
-    throw new Error('Password verification is failed');
+    // throw new Error('Password verification is failed');
+    console.error(error);
   }
 };
 
