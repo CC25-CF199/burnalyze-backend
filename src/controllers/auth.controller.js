@@ -39,7 +39,7 @@ const login = async (req, res, next) => {
     const { data: userData } = await UserModel.getUserByEmail(req.body.email);
 
     if (!userData) {
-      return next(createError(400, 'Could not find user'));
+      return next(createError(400, 'Could not find user with that email'));
     }
 
     // Check is password match
@@ -49,7 +49,7 @@ const login = async (req, res, next) => {
     );
 
     if (!isPasswordMatch) {
-      return next(createError(400, 'Incorrect email or password'));
+      return next(createError(400, 'Incorrect password'));
     }
 
     const loginToken = issueJwt(userData);
