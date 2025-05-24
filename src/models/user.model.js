@@ -22,8 +22,9 @@ class UserModel {
   static async createUser(body) {
     const { username, firstname, lastname, email, password } = body;
 
+    //Hash password
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(password, salt);
+    const hash = bcrypt.hashSync(password, salt);
 
     const response = await supabase
       .from('users')
@@ -34,7 +35,8 @@ class UserModel {
           firstname: firstname,
           lastname: lastname,
           email: email,
-          password_hash: hashedPassword,
+          password_hash: hash,
+          password_salt: salt,
         },
       ])
       .select();
