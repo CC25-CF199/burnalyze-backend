@@ -1,11 +1,25 @@
 const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcryptjs');
 
+const { hashPassword } = require('../utils/userPassword');
 const supabase = require('../config/supabase');
 
 class UserModel {
+  static async getUserById(id) {
+    const response = await supabase
+      .from('users')
+      .select()
+      .eq('id', id)
+      .maybeSingle();
+
+    return response;
+  }
+
   static async getUserByEmail(email) {
-    const response = await supabase.from('users').select().eq('email', email);
+    const response = await supabase
+      .from('users')
+      .select()
+      .eq('email', email)
+      .maybeSingle();
 
     return response;
   }
@@ -14,7 +28,8 @@ class UserModel {
     const response = await supabase
       .from('users')
       .select()
-      .eq('username', username);
+      .eq('username', username)
+      .maybeSingle();
 
     return response;
   }
@@ -22,9 +37,7 @@ class UserModel {
   static async createUser(body) {
     const { username, firstname, lastname, email, password } = body;
 
-    //Hash password
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt);
+    const { hash, salt } = hashPassword(password);
 
     const response = await supabase
       .from('users')
