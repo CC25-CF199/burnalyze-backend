@@ -1,12 +1,10 @@
 const createError = require('http-errors');
-
-const UserModel = require('../models/user.model');
-const authService = require('../services');
+const { authService } = require('../services');
 const { issueJwt } = require('../services/token.service');
 
 const register = async (req, res, next) => {
   try {
-    const user = await authService.authService.registerUser(req.body);
+    const user = await authService.registerUser(req.body);
 
     return res.status(201).json({
       error: false,
@@ -22,7 +20,7 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const userData = await authService.authService.validateEmailAndPassword(
+    const userData = await authService.validateEmailAndPassword(
       email,
       password
     );
