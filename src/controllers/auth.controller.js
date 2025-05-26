@@ -1,32 +1,45 @@
-const UserModel = require('../models/user.model');
 const createError = require('http-errors');
+const { authService } = require('../services');
+const { issueJwt } = require('../services/token.service');
 
 const register = async (req, res, next) => {
   try {
-    const value = req.body;
+    const user = await authService.registerUser(req.body);
 
-    const isEmailTaken = await UserModel.getUserByEmail(value.email);
-    const isUsernameTaken = await UserModel.getUserByUsername(value.username);
-
-    if (isUsernameTaken.data.length > 0) {
-      return next(createError(400, 'Username is taken or already registered'));
-    } else if (isEmailTaken.data.length > 0) {
-      return next(createError(400, 'Email already registered.'));
-    }
-
-    const dbResponse = await UserModel.createUser(value);
     return res.status(201).json({
       error: false,
       message: 'Account successfully registered.',
-      createdUser: dbResponse.data,
+      createdUser: user,
     });
   } catch (error) {
     console.error('Unexpected Error:', error.message);
-    return next(createError(500, 'An unexpected error occured'));
+    return next(createError(error));
   }
 };
 
-const login = async (req, res) => {};
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const userData = await authService.validateEmailAndPassword(
+      email,
+      password
+    );
+    const loginToken = issueJwt(userData);
+
+    return res.status(200).json({
+      error: false,
+      message: 'User authenticated successfully',
+      loginResult: {
+        userId: userData.id,
+        username: userData.username,
+        ...loginToken,
+      },
+    });
+  } catch (error) {
+    console.error('Unexpected Error:', error.message);
+    return next(createError(error));
+  }
+};
 
 module.exports = {
   register,
