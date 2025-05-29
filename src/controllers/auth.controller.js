@@ -1,6 +1,5 @@
 const createError = require('http-errors');
-const { authService } = require('../services');
-const { issueJwt } = require('../services/token.service');
+const { authService, tokenService } = require('../services');
 
 const register = async (req, res, next) => {
   try {
@@ -24,7 +23,7 @@ const login = async (req, res, next) => {
       email,
       password
     );
-    const loginToken = issueJwt(userData);
+    const loginToken = tokenService.issueJwt(userData);
 
     return res.status(200).json({
       error: false,
