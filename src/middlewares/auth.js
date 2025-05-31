@@ -8,7 +8,20 @@ const isAuth = async (req, res, next) => {
     return next();
   }
 
-  passport.authenticate('jwt', { session: false })(req, res, next);
+  passport.authenticate('jwt', { session: false }, (err, user) => {
+    if (err) {
+      return next(createError(err));
+    }
+
+    if (!user) {
+      req.isAuthenticated = false;
+      return next();
+    }
+
+    req.user = user;
+    req.isAuthenticated = true;
+    next();
+  })(req, res, next);
 };
 
 module.exports = { isAuth };

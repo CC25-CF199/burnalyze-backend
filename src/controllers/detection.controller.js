@@ -17,8 +17,17 @@ const predict = async (req, res, next) => {
 
     if (req.isAuthenticated) {
       // TO-DO store detection history data when authenticated
+      const detectionData = {
+        user_id: req.user.data.id,
+        woundClass: treatmentRecommendations.class,
+        desc: treatmentRecommendations.desc,
+        treatments: treatmentRecommendations.treatments,
+      };
+
       const isStoreSuccess =
-        await detectionService.storeAuthenticatedDetection();
+        await detectionService.storeAuthenticatedDetection(detectionData);
+
+      console.log(isStoreSuccess);
     }
 
     return res.status(200).json({
