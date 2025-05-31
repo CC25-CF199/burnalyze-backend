@@ -1,13 +1,13 @@
 const express = require('express');
-const multer = require('multer');
 const {
   detectionController,
   detectionHistoryController,
 } = require('../../controllers');
-const upload = multer({ dest: 'upload/' });
+const { uploadSingle } = require('../../middlewares/multer');
+const { isAuth } = require('../../middlewares/auth');
 
 const router = express.Router();
-router.post('/predict', detectionController.predict);
+router.post('/predict', uploadSingle, isAuth, detectionController.predict);
 router.get('/history/:id', detectionHistoryController.user_histories);
 
 module.exports = router;

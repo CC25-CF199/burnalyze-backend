@@ -59,6 +59,8 @@ class UserModel {
 
     return response;
   }
+
+  static async storeUserDetectionData() {}
 }
 
 module.exports = UserModel;
