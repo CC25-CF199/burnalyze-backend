@@ -18,7 +18,7 @@ const isAuth = async (req, res, next) => {
       return next();
     }
 
-    req.user = user;
+    req.user = user.data;
     req.isAuthenticated = true;
     next();
   })(req, res, next);

@@ -1,4 +1,5 @@
 const createError = require('http-errors');
+const fs = require('fs').promises;
 const { detectionService } = require('../services');
 const { DetectionModel } = require('../models');
 const { treatments } = require('../constants/treatment_recommendations');
@@ -15,19 +16,21 @@ const predict = async (req, res, next) => {
     const treatmentRecommendations =
       treatments[mlResponse.predicted_class_label];
 
+    // Handle authenticated user
     if (req.isAuthenticated) {
-      // TO-DO store detection history data when authenticated
       const detectionData = {
-        user_id: req.user.data.id,
+        user_id: req.user.id,
         woundClass: treatmentRecommendations.class,
         desc: treatmentRecommendations.desc,
         treatments: treatmentRecommendations.treatments,
         uploadedImage: uploadedImage,
       };
 
-      const isSuccessStoreData =
-        await detectionService.storeAuthenticatedDetection(detectionData);
+      await detectionService.storeAuthenticatedDetection(detectionData);
     }
+
+    // Delete local file after storing data to DB
+    await fs.unlink(uploadedImage.path);
 
     return res.status(200).json({
       error: false,

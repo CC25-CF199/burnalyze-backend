@@ -22,33 +22,40 @@ class DetectionModel {
     }
   }
 
-  // static async storeWoundImage(uploadedImage) {
-  //   const fileBuffer = fs.readFileSync(uploadedImage.path);
+  static async storeWoundImage(uploadedImage, user_id) {
+    const fileBuffer = fs.readFileSync(uploadedImage.path);
 
-  //   // Create unique filename with original extension
-  //   const fileExt = path.extname(uploadedImage.originalname);
-  //   const fileName = `${Date.now()}_${uuidv4()}${fileExt}`;
+    // Create unique filename with original extension
+    const fileExt = path.extname(uploadedImage.originalname);
+    const fileName = `${Date.now()}_${uuidv4()}${fileExt}`;
+    const storagePath = `burns/${user_id}/${fileName}`;
 
-  //   const { error } = await supabase.storage
-  //     .from('wound-img-records')
-  //     .upload(fileName, fileBuffer, {
-  //       contentType: uploadedImage.mimetype, // Use mimetype from multer
-  //       cacheControl: '3600',
-  //     });
+    const { data, error } = await supabase.storage
+      .from('wound-img-records')
+      .upload(storagePath, fileBuffer, {
+        contentType: uploadedImage.mimetype, // Use mimetype from multer
+        cacheControl: '3600',
+      });
 
-  //   if (error) {
-  //     throw error;
-  //   }
+    if (error) {
+      throw error;
+    }
+    return data.path;
+  }
 
-  //   const { data: imgUrl } = await supabase.storage
-  //     .from('wound-img-records')
-  //     .getPublicUrl(fileName);
+  static async getSignedImgUrl(storagePath) {
+    const { data, error } = await supabase.storage
+      .from('wound-img-records')
+      .createSignedUrl(storagePath, 3600);
 
-  //   return imgUrl;
-  // }
+    if (error) {
+      throw error;
+    }
+    return data.signedUrl;
+  }
 
   static async storeUserDetectionData(body) {
-    const { user_id, woundClass, desc, treatments } = body;
+    const { user_id, woundClass, desc, treatments, image_path } = body;
 
     const response = await supabase.from('detection_histories').insert([
       {
@@ -57,6 +64,7 @@ class DetectionModel {
         class: woundClass,
         desc: desc,
         treatments: treatments,
+        image_path: image_path,
       },
     ]);
 
