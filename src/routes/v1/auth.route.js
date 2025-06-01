@@ -5,7 +5,7 @@ const {
   signUpSchema,
   loginSchema,
 } = require('../../validations/auth.validation');
-const validate = require('../../middleware/validate');
+const validate = require('../../middlewares/validate');
 
 const router = express.Router();
 router.post('/register', validate(signUpSchema), authController.register);

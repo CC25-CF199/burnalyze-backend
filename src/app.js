@@ -1,14 +1,17 @@
+require('dotenv').config();
 const express = require('express');
 const createError = require('http-errors');
 const cors = require('cors');
-
-const { errorHandler } = require('./middleware/errorHandler');
+const { errorHandler } = require('./middlewares/errorHandler');
+const passport = require('passport');
+const { jwtStrategy } = require('./config/passport');
 
 const app = express();
 
 app.use(cors());
 
-require('dotenv').config();
+app.use(passport.initialize());
+passport.use('jwt', jwtStrategy);
 
 const PORT = process.env.PORT || 3000;
 const routes = require('./routes/v1');
