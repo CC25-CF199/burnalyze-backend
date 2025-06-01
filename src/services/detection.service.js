@@ -1,10 +1,13 @@
 const createError = require('http-errors');
-const { UserModel } = require('../models');
+const { DetectionModel } = require('../models');
 
 const storeAuthenticatedDetection = async detectionData => {
-  const dbResponse = await UserModel.storeUserDetectionData(detectionData);
-
-  return dbResponse;
+  // TO-DO: store image url to supabase storage
+  // const imgUrl = await DetectionModel.storeWoundImage(
+  //   detectionData.uploadedImage
+  // );
+  const storedDetectionData =
+    await DetectionModel.storeUserDetectionData(detectionData);
 };
 
 const getAuthenticatedDetection = async () => {

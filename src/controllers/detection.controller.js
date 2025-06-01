@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const { detectionService } = require('../services');
-const { MachineLearningModel } = require('../models');
+const { DetectionModel } = require('../models');
 const { treatments } = require('../constants/treatment_recommendations');
 
 const predict = async (req, res, next) => {
@@ -11,7 +11,7 @@ const predict = async (req, res, next) => {
       throw createError(400, 'No image file uploaded');
     }
 
-    const mlResponse = await MachineLearningModel.getPrediction(uploadedImage);
+    const mlResponse = await DetectionModel.getPrediction(uploadedImage);
     const treatmentRecommendations =
       treatments[mlResponse.predicted_class_label];
 
@@ -22,12 +22,11 @@ const predict = async (req, res, next) => {
         woundClass: treatmentRecommendations.class,
         desc: treatmentRecommendations.desc,
         treatments: treatmentRecommendations.treatments,
+        uploadedImage: uploadedImage,
       };
 
-      const isStoreSuccess =
+      const isSuccessStoreData =
         await detectionService.storeAuthenticatedDetection(detectionData);
-
-      console.log(isStoreSuccess);
     }
 
     return res.status(200).json({

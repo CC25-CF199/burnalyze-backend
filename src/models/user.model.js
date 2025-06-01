@@ -59,22 +59,6 @@ class UserModel {
 
     return response;
   }
-
-  static async storeUserDetectionData(body) {
-    const { user_id, woundClass, desc, treatments } = body;
-
-    const response = await supabase.from('detection_histories').insert([
-      {
-        id: uuidv4(),
-        user_id: user_id,
-        class: woundClass,
-        desc: desc,
-        treatments: treatments,
-      },
-    ]);
-
-    return response;
-  }
 }
 
 module.exports = UserModel;
