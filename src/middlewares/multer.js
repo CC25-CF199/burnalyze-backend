@@ -28,7 +28,7 @@ const uploadSingle = (req, res, next) => {
 };
 
 const checkFileType = (file, cb) => {
-  const fileFormat = /jpeg|jpg|png|gif/;
+  const fileFormat = /jpeg|jpg|png/;
   const extname = fileFormat.test(
     path.extname(file.originalname).toLowerCase()
   );

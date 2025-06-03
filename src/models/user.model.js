@@ -59,6 +59,33 @@ class UserModel {
 
     return response;
   }
+
+  static async getSignedImgUrl(path) {
+    const response = await supabase.storage
+      .from('wound-img-records')
+      .createSignedUrl(path, 7200);
+
+    return response;
+  }
+
+  static async getHistoryById(historyId) {
+    const response = await supabase
+      .from('detection_histories')
+      .select()
+      .eq('id', historyId)
+      .maybeSingle();
+
+    return response;
+  }
+
+  static async getAllUserHistories(userId) {
+    const response = await supabase
+      .from('detection_histories')
+      .select()
+      .eq('user_id', userId);
+
+    return response;
+  }
 }
 
 module.exports = UserModel;

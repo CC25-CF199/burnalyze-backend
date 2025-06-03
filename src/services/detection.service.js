@@ -1,10 +1,27 @@
-const { DetectionModel } = require('../models');
+const createError = require('http-errors');
+const { DetectionModel, UserModel } = require('../models');
+const { getSignedUrls } = require('../utils/getSignedUrls');
+const { treatments } = require('../constants/treatment_recommendations');
+
+const getMlResponse = async uploadedImage => {
+  const mlResponse = await DetectionModel.getPrediction(uploadedImage);
+  const treatmentRecommendations = treatments[mlResponse.predicted_class_label];
+
+  const data = {
+    body_part: mlResponse.predicted_body_part,
+    ...treatmentRecommendations,
+    uploadedImage: uploadedImage,
+    burn_degree_confidence: mlResponse.burn_degree_confidence,
+    body_part_confidence: mlResponse.body_part_confidence,
+  };
+
+  return data;
+};
 
 const storeAuthenticatedDetection = async detectionData => {
   const userId = detectionData.user_id;
   const uploadedImg = detectionData.uploadedImage;
 
-  // TO-DO: store image url to supabase storage
   const storagePath = await DetectionModel.storeWoundImage(uploadedImg, userId);
 
   const detectionToStore = {
@@ -15,8 +32,7 @@ const storeAuthenticatedDetection = async detectionData => {
   await DetectionModel.storeUserDetectionData(detectionToStore);
 };
 
-const getAuthenticatedDetection = async () => {
-  // TO-DO
+module.exports = {
+  storeAuthenticatedDetection,
+  getMlResponse,
 };
-
-module.exports = { storeAuthenticatedDetection };
