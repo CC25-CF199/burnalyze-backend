@@ -55,7 +55,16 @@ class DetectionModel {
   }
 
   static async storeUserDetectionData(body) {
-    const { user_id, woundClass, desc, treatments, image_path } = body;
+    const {
+      user_id,
+      woundClass,
+      desc,
+      treatments,
+      image_path,
+      body_part,
+      burn_degree_confidence,
+      body_part_confidence,
+    } = body;
 
     const response = await supabase.from('detection_histories').insert([
       {
@@ -65,6 +74,9 @@ class DetectionModel {
         desc: desc,
         treatments: treatments,
         image_path: image_path,
+        body_part: body_part,
+        burn_degree_confidence: burn_degree_confidence,
+        body_part_confidence: body_part_confidence,
       },
     ]);
 

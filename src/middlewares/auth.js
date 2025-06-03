@@ -1,9 +1,9 @@
 const passport = require('passport');
 const createError = require('http-errors');
 
-const isAuth = async (req, res, next) => {
+const isAuth = route => async (req, res, next) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader) {
+  if (!authHeader && route === 'predict') {
     req.isAuthenticated = false;
     return next();
   }
