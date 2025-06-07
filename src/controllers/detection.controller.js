@@ -24,12 +24,13 @@ const predict = async (req, res, next) => {
     // Delete local file after storing data to DB
     await fs.unlink(uploadedImage.path);
 
-    const { body_part, woundClass, desc, treatments } = mlResponse;
+    const { body_part, woundClass, desc, treatments, burnType } = mlResponse;
     return res.status(200).json({
       error: false,
       message: {
         body_part,
         woundClass,
+        burnType,
         desc,
         treatments,
       },

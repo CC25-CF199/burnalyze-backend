@@ -1,6 +1,4 @@
-const createError = require('http-errors');
 const { DetectionModel, UserModel } = require('../models');
-const { getSignedUrls } = require('../utils/getSignedUrls');
 const { treatments } = require('../constants/treatment_recommendations');
 
 const getMlResponse = async uploadedImage => {

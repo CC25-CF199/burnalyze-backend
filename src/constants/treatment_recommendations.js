@@ -1,6 +1,7 @@
 const treatments = {
   '1st degree burn': {
     woundClass: 'Tingkat 1',
+    burnType: 'Superficial Burns',
     desc: 'Terdeteksi adanya luka bakar kulit tingkat satu. Jenis luka bakar ini dapat menyebabkan pembengkakan dan peradangan ringan, kemerahan, dan nyeri ringan.',
     treatments: [
       'Bilas area terdampak dengan air dingin',
@@ -12,6 +13,7 @@ const treatments = {
   },
   '2nd degree burn': {
     woundClass: 'Tingkat 2',
+    burnType: 'Partial-Thickness Burns',
     desc: 'Terdeteksi adanya luka bakar kulit tingkat dua. Jenis luka bakar ini dapat menyebabkan kemerahan, bengkak, nyeri, dan bahkan kulit melepuh. Disarankan melakukan perawatan yang tepat guna mencegah infeksi.',
     treatments: [
       'Gunakan kompres atau rendam luka dalam air sejuk selama 10-15 menit',
@@ -23,6 +25,7 @@ const treatments = {
   },
   '3rd degree burn': {
     woundClass: 'Tingkat 3',
+    burnType: 'Full-Thickness Burns',
     desc: 'Terdeteksi adanya luka bakar kulit tingkat tiga. Jenis luka bakar ini merupakan yang paling parah karena mencakup kerusakan seluruh lapisan kulit hingga jaringan dibawahnya. Kami sangat menyarankan anda untuk segera menghubungi tenaga medis untuk mendapatkan penanganan yang tepat. Namun ada beberapa hal yang dapat anda lakukan sebelum mendapat pertolongan medis',
     treatments: [
       'Jauhkan korban dari sumber penyebab luka bakar',

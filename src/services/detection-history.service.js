@@ -10,7 +10,7 @@ const getAuthenticatedUserHistories = async userId => {
   }
 
   if (data.length === 0) {
-    return 'No record found for this user';
+    return [];
   }
 
   // Get signed url for each image path

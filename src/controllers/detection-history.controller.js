@@ -7,9 +7,18 @@ const getAllUserHistories = async (req, res, next) => {
     const response =
       await detectionHistoryService.getAuthenticatedUserHistories(userId);
 
+    if (response.length === 0) {
+      res.status(200).json({
+        error: false,
+        message: 'No record found for this user',
+        userHistories: [],
+      });
+    }
+
     res.status(200).json({
       error: false,
-      message: response,
+      message: 'Records fetch success',
+      userHistories: response,
     });
   } catch (error) {
     console.error('Unexpected Error:', error.message);
