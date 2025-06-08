@@ -58,6 +58,7 @@ class DetectionModel {
     const {
       user_id,
       woundClass,
+      burnType,
       desc,
       treatments,
       image_path,
@@ -71,6 +72,7 @@ class DetectionModel {
         id: uuidv4(),
         user_id: user_id,
         class: woundClass,
+        burn_type: burnType,
         desc: desc,
         treatments: treatments,
         image_path: image_path,
