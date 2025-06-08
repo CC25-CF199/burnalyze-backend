@@ -8,14 +8,14 @@ const getAllUserHistories = async (req, res, next) => {
       await detectionHistoryService.getAuthenticatedUserHistories(userId);
 
     if (response.length === 0) {
-      res.status(200).json({
+      return res.status(200).json({
         error: false,
         message: 'No record found for this user',
         userHistories: [],
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       error: false,
       message: 'Records fetch success',
       userHistories: response,
@@ -33,7 +33,7 @@ const getUserHistoryDetails = async (req, res, next) => {
     const response =
       await detectionHistoryService.getSingleUserHistory(historyId);
 
-    res.status(200).json({
+    return res.status(200).json({
       error: false,
       message: response,
     });
