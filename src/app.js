@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const createError = require('http-errors');
 const cors = require('cors');
 const { errorHandler } = require('./middlewares/errorHandler');
@@ -26,6 +28,12 @@ app.use((req, res, next) => {
 
 // Error handler middleware
 app.use(errorHandler);
+
+// Create upload dir
+const uploadDir = path.join(__dirname, '../upload');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
