@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
-const path = require('Path');
+const path = require('path');
 const createError = require('http-errors');
 const cors = require('cors');
 const { errorHandler } = require('./middlewares/errorHandler');
