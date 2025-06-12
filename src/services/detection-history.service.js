@@ -40,4 +40,18 @@ const getSingleUserHistory = async id => {
   };
 };
 
-module.exports = { getSingleUserHistory, getAuthenticatedUserHistories };
+const deleteSingleHistory = async id => {
+  const { error } = await UserModel.deleteSingleUserHistory(id);
+
+  if (error) {
+    throw createError(error.message);
+  }
+
+  return 'Successfully delete data';
+};
+
+module.exports = {
+  getSingleUserHistory,
+  getAuthenticatedUserHistories,
+  deleteSingleHistory,
+};

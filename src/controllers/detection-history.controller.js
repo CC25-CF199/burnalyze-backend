@@ -43,4 +43,25 @@ const getUserHistoryDetails = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllUserHistories, getUserHistoryDetails };
+const deleteUserHistory = async (req, res, next) => {
+  try {
+    const historyId = req.params.id;
+
+    const response =
+      await detectionHistoryService.deleteSingleHistory(historyId);
+
+    return res.status(200).json({
+      error: false,
+      message: response,
+    });
+  } catch (error) {
+    console.error('Unexpected Error:', error.message);
+    return next(createError(error));
+  }
+};
+
+module.exports = {
+  getAllUserHistories,
+  getUserHistoryDetails,
+  deleteUserHistory,
+};

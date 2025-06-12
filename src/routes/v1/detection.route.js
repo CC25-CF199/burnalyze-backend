@@ -24,5 +24,10 @@ router.get(
   isAuth('history-details'),
   detectionHistoryController.getUserHistoryDetails
 );
+router.post(
+  '/history/details/:id',
+  isAuth('history-details'),
+  detectionHistoryController.deleteUserHistory
+);
 
 module.exports = router;

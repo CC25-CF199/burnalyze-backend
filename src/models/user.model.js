@@ -86,6 +86,15 @@ class UserModel {
 
     return response;
   }
+
+  static async deleteSingleUserHistory(historyId) {
+    const response = await supabase
+      .from('detection_histories')
+      .delete()
+      .eq('id', historyId);
+
+    return response;
+  }
 }
 
 module.exports = UserModel;
