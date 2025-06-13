@@ -95,6 +95,29 @@ class UserModel {
 
     return response;
   }
+
+  static async deleteUserHistories(userId) {
+    const response = await supabase
+      .from('detection_histories')
+      .delete()
+      .eq('user_id', userId);
+
+    return response;
+  }
+
+  static async deleteUserStorage(imagePaths) {
+    const response = await supabase.storage
+      .from('wound-img-records')
+      .remove(imagePaths);
+
+    return response;
+  }
+
+  static async deleteUserAccount(userId) {
+    const response = await supabase.from('users').delete().eq('id', userId);
+
+    return response;
+  }
 }
 
 module.exports = UserModel;

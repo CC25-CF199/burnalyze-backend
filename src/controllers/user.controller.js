@@ -17,6 +17,25 @@ const getUserInfo = async (req, res, next) => {
   }
 };
 
+const deleteUserAccount = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+
+    const isSuccess = await userService.deleteUserAccountById(userId);
+
+    if (isSuccess) {
+      return res.status(200).json({
+        error: false,
+        message: 'User account removed successfully',
+      });
+    }
+  } catch (error) {
+    console.error('Unexpected Error:', error.message);
+    return next(createError(error));
+  }
+};
+
 module.exports = {
   getUserInfo,
+  deleteUserAccount,
 };

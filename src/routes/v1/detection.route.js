@@ -23,7 +23,7 @@ router.get(
   isAuth('history-details'),
   detectionHistoryController.getUserHistoryDetails
 );
-router.post(
+router.delete(
   '/history/details/:id',
   isAuth('history-details'),
   detectionHistoryController.deleteUserHistory
